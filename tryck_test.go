@@ -51,7 +51,7 @@ func TestCustomCatch(t *testing.T) {
 		try(errors.New("shouldn't be reached"))
 	}, func(err error) bool {
 		sideEffect = true
-		if err != nil && err.Error() == "stop" {
+		if err.Error() == "stop" {
 			return false
 		}
 		return true

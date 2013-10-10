@@ -41,8 +41,8 @@ func (p TryPanic) String() string {
 type TryFunc func(...interface{})
 
 // TryCatch executes the tryBlock function passed as argument. Each call to the tryBlocks's 'try' argument
-// will pass it's last argument, which must be an error, to the catch function. The catch function
-// determines if the tryBlock execution should be terminated at that point. TryCatch returns the last non-nil
+// will pass it's last argument, if it is a non-nil error, to the catch function. The catch function
+// determines if the tryBlock execution should be terminated at that point. TryCatch returns the last
 // error for which catch returned false (ie. the error that stopped the execution), wrapped in a TryError.
 //
 // The catch argument can be nil; in that case, a standard 'if err != nil { return false }; return true' will be used.
@@ -77,7 +77,7 @@ func TryCatch(tryBlock func(try TryFunc), catch func(error) bool) error {
 			if len(v) < 1 {
 				return
 			}
-			if e, ok := v[len(v)-1].(error); (!ok && e != nil) || catch(e) {
+			if e, ok := v[len(v)-1].(error); !ok || catch(e) {
 				return
 			} else {
 				err = TryError{e, tryCounter}

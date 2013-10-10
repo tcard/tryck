@@ -27,7 +27,7 @@ func ExampleTryCatch() {
 		fmt.Println("Shouldn't be reached!")
 	}, func(err error) bool {
 		fmt.Printf("Entered catch block with error '%v';", err)
-		if err == nil || err.Error() == "OK" {
+		if err.Error() == "OK" {
 			fmt.Println(" continuing.")
 			return true
 		}
@@ -37,7 +37,6 @@ func ExampleTryCatch() {
 	fmt.Printf("Stopped at error '%v' in the %d'th try().", err, err.(TryError).Nth)
 
 	// Output:
-	// Entered catch block with error '<nil>'; continuing.
 	// Entered catch block with error 'OK'; continuing.
 	// Entered catch block with error 'n should be >= 0'; stopping.
 	// Stopped at error 'n should be >= 0' in the 3'th try().
