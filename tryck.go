@@ -51,6 +51,9 @@ type TryFunc func(...interface{})
 //
 // Any panic encountered inside a TryCatch will be recovered and re-panicked. So that the original stack trace doesn't
 // get lost in the process, the panic gets wrapped in a TryPanic which saves it.
+//
+// A limitation is that 'try' is not concurrent-safe. You shouldn't call 'try' from a goroutine other than the one in which 'TryCatch'
+// was called.
 func TryCatch(tryBlock func(try TryFunc), catch func(error) bool) error {
 	err := error(nil)
 	p := make(chan interface{})
